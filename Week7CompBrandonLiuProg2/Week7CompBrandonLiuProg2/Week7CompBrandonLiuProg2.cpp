@@ -1,19 +1,34 @@
 #include "pch.h"
 #include "date.h"
+#include "person.h"
 #include <iostream>
+#include <string>
+using namespace std;
 
 int main()
 {
-	cout << "Name: Brandon Liu - Program Name: Prog6Box - Date: 2/25/2019\n\n";
+	cout << "Name: Brandon Liu - Program Name: Prog2 - Date: 2/25/2019\n\n";
+
+	person Person1;
+	cout << Person1.getFirstName() << " " << Person1.getLastName() << endl;
+	Person1.getBirthday();
+	cout << endl;
+
+	date date2(04, 19, 2002);
+	person Person2("Brandon", "Liu", date2);
+
+	cout << Person2.getFirstName() << " " << Person2.getLastName() << endl;
+	Person2.getBirthday();
+
+	date2.setDay(30);
+	cout << date2.getDay() << endl;
+
+	date2.setDay(31); //Prints "Incorrect day value" and does not change day
+	cout << date2.getDay() << endl;
+
+	date2.setYear(12); //Prints "Incorrect year value" and does not change year
+	cout << date2.getYear() << endl;
+
+	system("pause");
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

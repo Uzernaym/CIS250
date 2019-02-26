@@ -1,0 +1,29 @@
+#include "pch.h"
+#include "box.h"
+using namespace std;
+
+int main() {
+	cout << "Name: Brandon Liu - Program Name: Prog6Box - Date: 2/12/2019\n\n";
+
+	// Box 1 - Test set functions, Volume, getHeight and area functions
+
+	box B1;    // HINT MAKE A Default constructor or set functions...
+	B1.setWidth(2);
+	B1.setHeight(3);
+	B1.setDepth(4);
+	cout << "Height = " << B1.getHeight() << endl;
+	cout << "Area = " << B1.calcArea() << endl;
+	cout << "Volume = " << B1.calcVolume() << endl << endl;
+
+	// Box 2 - Test zero value error for calc Area and Volume of sides functions
+
+	box B2;
+	B2.setWidth(3);
+	B2.setHeight(4);
+	cout << "Depth = " << B2.getDepth() << endl;
+	cout << "Area = " << B2.calcArea() << endl;
+	cout << "Volume = " << B2.calcVolume() << endl;
+
+	system("pause");
+	return(0);
+}

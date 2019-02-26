@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-	cout << "Name: Brandon Liu - Program Name: Prog6Box - Date: 2/25/2019\n\n";
+	cout << "Name: Brandon Liu - Program Name: Prog2 - Date: 2/25/2019\n\n";
 
 	Birthday birthObj(04, 19, 2002);
 

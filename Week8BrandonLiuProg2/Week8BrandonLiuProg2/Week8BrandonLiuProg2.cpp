@@ -32,6 +32,7 @@ int main() {
 	cout << "Used Arrow -Value of X is: " << ptrMyClass2->getX() << endl;
 	ptrMyClass2->setX(333);
 	cout << "Used Arrow -Value of X is: " << ptrMyClass2->getX() << endl;
-system("pause");
-return 0;
+
+	system("pause");
+	return 0;
 }

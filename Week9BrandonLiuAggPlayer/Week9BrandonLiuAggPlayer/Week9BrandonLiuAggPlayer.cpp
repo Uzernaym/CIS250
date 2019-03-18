@@ -18,12 +18,14 @@ public:
 	Player() : name("Unknown") {}
 	
 	Player(string n) : name(n) {}
+
+	~Player() {	};
 };
 
 class Team {
 private:
 	Player *ptrPlayer;
-	vector<Player *> players;
+	vector<Player> players;
 public:
 	Team(Player *player = NULL) : ptrPlayer(player) {}
 
@@ -33,12 +35,15 @@ public:
 	void add(Player &p) {
 		players.push_back(p);
 	};
-	string printAllNames() {
+	void printAllNames() {
 		for (int i = 0; i < players.size(); i++) {
 			cout << players[i].getName() << " ";
 		}
-		return cout << "\n";
 	}
+
+	~Team() {
+		cout << "Team deleted" << endl;
+	};
 };
 
 int main() {
@@ -54,13 +59,39 @@ int main() {
 	Player P7;
 	P7.setName("Tumbo");
 
-	Team basketballTeam;
-	Team soccerTeam;
 	
+	Team * basketballTeam = new Team;
+	basketballTeam->add(P1);
+	basketballTeam->add(P2);
+	basketballTeam->add(P3);
+	basketballTeam->add(P4);
+	basketballTeam->add(P5);
+	basketballTeam->printAllNames();
+	cout << endl;
+	delete basketballTeam;
+
+
+	Team * soccerTeam = new Team;
+	soccerTeam->add(P1);
+	soccerTeam->add(P2);
+	soccerTeam->add(P3);
+	soccerTeam->add(P4);
+	soccerTeam->add(P5);
+	soccerTeam->add(P6);
+	soccerTeam->add(P7);
+	soccerTeam->printAllNames();
+	cout << endl;
+	delete soccerTeam;
+
+	cout << endl;
+
 	cout << P1.getName() << endl;
-
-
-
+	cout << P2.getName() << endl;
+	cout << P3.getName() << endl;
+	cout << P4.getName() << endl;
+	cout << P5.getName() << endl;
+	cout << P6.getName() << endl;
+	cout << P7.getName() << endl;
 
 	system("pause");
 	return 0;

@@ -8,6 +8,7 @@ int main()
 	cout << "What's your integer?" << endl;
 	cin >> n;
 	cout << n * n * n;
+	cout << "test" << endl;
 	system("pause");
 	return 0;
 }

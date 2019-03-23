@@ -2,7 +2,7 @@
 
 //What is the sequence in which constructors and destructors are executed?
 //Constructors are run when an instance of the class is called. For example, Whole W1; 
-//Desctructors are run at the end of the scope of a class. In this case, that is when the main() function is complete.
+//Destructors are run at the end of the scope of a class. In this case, that is when the main() function is complete.
 
 #include "pch.h"
 #include <string>

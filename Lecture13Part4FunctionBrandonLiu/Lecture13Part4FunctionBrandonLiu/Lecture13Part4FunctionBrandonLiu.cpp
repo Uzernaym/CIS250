@@ -53,35 +53,26 @@ public:
 	}
 };
 
+
+void polyNoise(animal * a) {
+	a->animalSound();
+}
+
 int main() {
 	cout << "Name: Brandon Liu - Program Name: Part 3 Switch - Date: 4/15/2019\n";
-
 	cat C1;
 	dog D1;
 	elephant E1;
 	mouse M1;
+	animal * cat = &C1;
+	animal * dog = &D1;
+	animal * elephant = &E1;
+	animal * mouse = &M1;
 
-	char inChar;
-	cout << "What animal would you like?" << endl;
-	cin >> inChar;
-
-	switch(inChar) {
-	case 'c':
-		C1.animalSound();
-		break;
-	case 'd':
-		D1.animalSound();
-		break;
-	case 'e':
-		E1.animalSound();
-		break;
-	case 'm':
-		M1.animalSound();
-		break;
-	default:
-		cout << "Invalid animal" << endl;
-		break;
-	}
+	polyNoise(cat);
+	polyNoise(dog);
+	polyNoise(elephant);
+	polyNoise(mouse);
 
 	system("pause");
 	return 0;

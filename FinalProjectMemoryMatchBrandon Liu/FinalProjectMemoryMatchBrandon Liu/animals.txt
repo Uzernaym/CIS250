@@ -24,7 +24,7 @@ Frog
 Fox
 Squirrel
 Rabbit
-Armadillo
+Leopard
 Elephant
 Lion
 Tiger

@@ -10,6 +10,6 @@ int main()
 {
     cout << "Hello World!\n";
 	MemoryMatchGame m1;
-	
+	m1.printWords();
 
 }

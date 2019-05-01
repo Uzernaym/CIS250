@@ -5,9 +5,13 @@ using namespace std;
 
 class MemoryMatchGame
 {
-private:
-	static const string words[];
 public:
+	static const string words[];
+	static int wordsSize;
+
 	MemoryMatchGame();
+
+	void printWords();
+
 	~MemoryMatchGame();
 };

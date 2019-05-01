@@ -167,7 +167,6 @@
   <ItemGroup>
     <Text Include="food.txt" />
     <Text Include="states.txt" />
-    <Text Include="Text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

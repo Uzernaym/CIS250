@@ -1,4 +1,4 @@
-// FinalProjectMemoryMatchBrandon Liu.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// FinalProjectMemoryMatchBrandon Liu.cpp
 
 #include "pch.h"
 #include <iostream>
@@ -9,10 +9,17 @@
 using namespace std;
 
 class MemoryMatchGame {
-	
+private:
+	int levelOfDifficulty;
+	int speedOfGame;
 public:
+	int input;
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
+
+		cout << "Choose your category" << endl;
+		cin >> input;
+		chooseDifficulty(input);
 	}
 
 	void grabFile(string name, vector<string> &data) {
@@ -32,6 +39,16 @@ public:
 			data.push_back(aWord);
 		}
 	}
+	void chooseDifficulty(int x) {
+		if (x <= 3 && x <= 0) {
+
+		} else {
+			cout << "Incorrect input" << endl;
+			cout << "Choose your cateogry" << endl;
+			cin >> input;
+			chooseDifficulty(input);
+		}
+	}
 };
 
 int main()
@@ -43,12 +60,10 @@ int main()
 	m1.grabFile("food", food);
 	m1.grabFile("states", states);
 	m1.grabFile("animals", animals);
-	
-	
-	
-	for (int i = 0; i < food.size(); i++) {
-		cout << food[i] << endl;
-	}
+
+
+
+
 
 	system("pause");
 	return 0;

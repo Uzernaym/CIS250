@@ -15,7 +15,7 @@ public:
 		cout << "Memory Match game started" << endl;
 	}
 
-	void grabFile(string name, vector<string> data) {
+	void grabFile(string name, vector<string> &data) {
 		ifstream fin;
 		string aLine, aWord;
 		fin.open(name + ".txt");
@@ -40,7 +40,9 @@ int main()
 	string categories[3] = { "food", "states", "animals" };
 
 	MemoryMatchGame m1;
-	m1.grabFile(categories[0], food);
+	m1.grabFile("food", food);
+	m1.grabFile("states", states);
+	m1.grabFile("animals", animals);
 	
 	
 	

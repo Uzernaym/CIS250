@@ -14,7 +14,8 @@ private:
 	int levelOfDifficulty;
 	int speedOfGame;
 	int category;
-	int letterWidth = 10;
+	int letterWidth = 14;
+	string sInput;
 public:
 	int input;
 	MemoryMatchGame() {
@@ -23,7 +24,6 @@ public:
 		//chooseSpeed();
 		//chooseCategory();
 	}
-
 	void grabFile(string name, vector<string> &data) {
 		ifstream fin;
 		string aLine, aWord;
@@ -44,7 +44,7 @@ public:
 		cin >> input;
 		if (input <= 3 && input >= 1) {
 			cout << input << endl;
-			levelOfDifficulty = input;
+			levelOfDifficulty = (input * 2) + 2;
 		}
 		else {
 			cout << "Incorrect input" << endl;
@@ -55,7 +55,6 @@ public:
 		cout << "Choose your speed!\n1 - 6 seconds - Easy\n2 - 4 seconds - Moderate\n3 - 2 seconds - Hard" << endl;
 		cin >> input;
 		if (input <= 3 && input >= 1) {
-			cout << input << endl;
 			speedOfGame = input;
 		}
 		else {
@@ -67,7 +66,6 @@ public:
 		cout << "Choose your category!\n1 - Food\n2 - States\n3 - Animals" << endl;
 		cin >> input;
 		if (input <= 3 && input >= 1) {
-			cout << input << endl;
 			category = input;
 		}
 		else {
@@ -75,15 +73,72 @@ public:
 			chooseCategory();
 		}
 	}
-	void startGame() {
+	void ghettoClear() {
+		for (int i = 0; i < 50; i++) {
+			cout << "" << endl;
+		}
+	}
+	void drawTop() {
 		cout << char(201);
-		for (int i = 0; i < (levelOfDifficulty * 2) + 2; i++) {
+		for (int i = 0; i < levelOfDifficulty; i++) {
 			cout << setfill(char(205)) << setw(letterWidth);
-			if (i < (levelOfDifficulty * 2) + 1) {
+			if (i < levelOfDifficulty - 1) {
 				cout << char(203);
 			}
 		}
-		cout << char(187);
+		cout << char(187) << endl;
+	}
+	void drawBottom() {
+		cout << char(200);
+		for (int i = 0; i < levelOfDifficulty; i++) {
+			cout << setfill(char(205)) << setw(letterWidth);
+			if (i < levelOfDifficulty - 1) {
+				cout << char(202);
+			}
+		}
+		cout << char(188) << endl;
+	}
+	void drawWalls() {
+		for (int i = 0; i < 1; i++) {
+			for (int i = 0; i < levelOfDifficulty; i++) {
+				cout << char(186);
+				cout << setfill(char(32)) << setw(letterWidth-1) << "test";
+			}
+			cout << char(186) << endl;
+		}
+	}
+	void drawDivider() {
+		cout << char(204);
+		for (int i = 0; i < levelOfDifficulty; i++) {
+			
+			for (int j = 0; j < letterWidth - 1; j++) {
+				cout << char(205);
+			}
+			if (i < levelOfDifficulty - 1) {
+				cout << char(206);
+			}
+		}
+		cout << char(185) << endl;
+	}
+	void startGame() {
+		cout << "Start game? Y/N"<< endl;
+		getline(cin, sInput);
+		cout << sInput;
+		if (sInput == "Y") {
+			ghettoClear();
+			drawTop();
+			for (int i = 0; i < levelOfDifficulty; i++) {
+				drawWalls();
+				if (i < levelOfDifficulty - 1) {
+					drawDivider();
+				}
+			}
+			drawBottom();
+		}
+		else {
+			startGame();
+		}
+		
 	}
 };
 
@@ -98,7 +153,6 @@ int main()
 	m1.grabFile("animals", animals);
 
 	m1.startGame();
-
 
 	system("pause");
 	return 0;

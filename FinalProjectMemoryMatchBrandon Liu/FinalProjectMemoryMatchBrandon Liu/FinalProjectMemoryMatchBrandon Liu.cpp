@@ -16,14 +16,15 @@ private:
 	int category;
 	int letterWidth = 14;
 	string sInput;
+	string categories[3] = { "food", "states", "animals" };
+	vector<string> food, states, animals;
 public:
 	int input;
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
 		chooseDifficulty();
-		createVectors();
+		//createVectors();
 		//chooseSpeed();
-		//chooseCategory();
 
 	}
 	void grabFile(string name, vector<string> &data) {
@@ -86,10 +87,16 @@ public:
 		}
 	}
 	void chooseCategory() {
-		cout << "Choose your category!\n1 - Food\n2 - States\n3 - Animals" << endl;
+		cout << "Choose your category!\n1 - " << categories[0] << "\n2 - " << categories[1] << "\n3 - " << categories[2] << endl;
 		cin >> input;
-		if (input <= 3 && input >= 1) {
-			category = input;
+		if (input == 1) {
+			grabFile(categories[input - 1], food);
+		}
+		else if (input == 2) {
+			grabFile(categories[input - 1], states);
+		}
+		else if (input == 3) {
+			grabFile(categories[input - 1], animals);
 		}
 		else {
 			cout << "Incorrect input" << endl;
@@ -148,30 +155,27 @@ public:
 		getline(cin, sInput);
 		cout << sInput;
 		if (sInput == "Y") {
-			ghettoClear();
-			drawTop();
-			for (int i = 0; i < levelOfDifficulty; i++) {
-				drawWalls();
-				if (i < levelOfDifficulty - 1) {
-					drawDivider();
-				}
-			}
-			drawBottom();
+			draw();
 		} else {
 			startGame();
 		}
+	}
+	void draw() {
+		ghettoClear();
+		drawTop();
+		for (int i = 0; i < levelOfDifficulty; i++) {
+			drawWalls();
+			if (i < levelOfDifficulty - 1) {
+				drawDivider();
+			}
+		}
+		drawBottom();
 	}
 };
 
 int main()
 {
-	vector<string> food, states, animals;
-	string categories[3] = { "food", "states", "animals" };
-
 	MemoryMatchGame m1;
-	m1.grabFile("food", food);
-	m1.grabFile("states", states);
-	m1.grabFile("animals", animals);
 
 	m1.startGame();
 

@@ -21,8 +21,10 @@ public:
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
 		chooseDifficulty();
+		createVectors();
 		//chooseSpeed();
 		//chooseCategory();
+
 	}
 	void grabFile(string name, vector<string> &data) {
 		ifstream fin;
@@ -43,12 +45,33 @@ public:
 		cout << "Choose your difficulty!\n1 - (4x4) grid - Easy\n2 - (6x6) grid - Moderate\n3 - (8x8) grid - Difficult" << endl;
 		cin >> input;
 		if (input <= 3 && input >= 1) {
-			cout << input << endl;
 			levelOfDifficulty = (input * 2) + 2;
 		}
 		else {
 			cout << "Incorrect input" << endl;
 			chooseDifficulty();
+		}
+	}
+	void createVectors() {
+		vector<vector<string>> faceLayer(levelOfDifficulty);
+		for (int i = 0; i < levelOfDifficulty; i++) {
+			faceLayer[i] = vector<string>(levelOfDifficulty);
+		}
+
+		vector<vector<string>> hiddenLayer(levelOfDifficulty);
+		for (int i = 0; i < levelOfDifficulty; i++) {
+			hiddenLayer[i] = vector<string>(levelOfDifficulty);
+		}
+
+		for (int i = 0; i < faceLayer.size(); i++) {
+			for (int j = 0; j < faceLayer[i].size(); j++) {
+				faceLayer[i][j] = "test" + i;
+			}
+		}
+		for (int i = 0; i < faceLayer.size(); i++) {
+			for (int j = 0; j < faceLayer[i].size(); j++) {
+				cout << faceLayer[i][j] << endl;
+			}
 		}
 	}
 	void chooseSpeed() {
@@ -134,11 +157,9 @@ public:
 				}
 			}
 			drawBottom();
-		}
-		else {
+		} else {
 			startGame();
 		}
-		
 	}
 };
 

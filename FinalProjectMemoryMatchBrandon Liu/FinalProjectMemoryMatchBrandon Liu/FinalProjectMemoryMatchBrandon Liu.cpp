@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <ctime>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -15,17 +17,21 @@ private:
 	int speedOfGame;
 	int category;
 	int letterWidth = 14;
+	int randObj;
 	string sInput;
-	string categories[3] = { "food", "states", "animals" };
+	string categories[3] = { "Food", "States", "Animals" };
 	vector<string> food, states, animals;
+	vector<vector<string>> categoryList = {food, states, animals};
+	vector<vector<string>> faceLayer, hiddenLayer;
 public:
 	int input;
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
 		chooseDifficulty();
-		//createVectors();
+		chooseCategory();
+		faceLayer = createFaceVector();
+		hiddenLayer = createHiddenVector();
 		//chooseSpeed();
-
 	}
 	void grabFile(string name, vector<string> &data) {
 		ifstream fin;
@@ -53,27 +59,32 @@ public:
 			chooseDifficulty();
 		}
 	}
-	void createVectors() {
+
+	vector<vector<string>> createFaceVector() {
 		vector<vector<string>> faceLayer(levelOfDifficulty);
 		for (int i = 0; i < levelOfDifficulty; i++) {
 			faceLayer[i] = vector<string>(levelOfDifficulty);
 		}
-
+		for (int i = 0; i < faceLayer.size(); i++) {
+			for (int j = 0; j < faceLayer[i].size(); j++) {
+				faceLayer[i][j] = categories[category];
+			}
+		}
+		return faceLayer;
+	}
+	vector<vector<string>> createHiddenVector() {
 		vector<vector<string>> hiddenLayer(levelOfDifficulty);
 		for (int i = 0; i < levelOfDifficulty; i++) {
 			hiddenLayer[i] = vector<string>(levelOfDifficulty);
 		}
-
-		for (int i = 0; i < faceLayer.size(); i++) {
-			for (int j = 0; j < faceLayer[i].size(); j++) {
-				faceLayer[i][j] = "test" + i;
+		for (int i = 0; i < hiddenLayer.size(); i++) {
+			srand(time(NULL));
+			randObj = rand() % hiddenLayer.size();
+			for (int j = 0; j < hiddenLayer[i].size(); j++) {
+				hiddenLayer[i][j] = food[i];
 			}
 		}
-		for (int i = 0; i < faceLayer.size(); i++) {
-			for (int j = 0; j < faceLayer[i].size(); j++) {
-				cout << faceLayer[i][j] << endl;
-			}
-		}
+		return hiddenLayer;
 	}
 	void chooseSpeed() {
 		cout << "Choose your speed!\n1 - 6 seconds - Easy\n2 - 4 seconds - Moderate\n3 - 2 seconds - Hard" << endl;
@@ -87,16 +98,19 @@ public:
 		}
 	}
 	void chooseCategory() {
-		cout << "Choose your category!\n1 - " << categories[0] << "\n2 - " << categories[1] << "\n3 - " << categories[2] << endl;
-		cin >> input;
-		if (input == 1) {
-			grabFile(categories[input - 1], food);
+		cout << "Choose your category!\n" << categories[0] << "\n" << categories[1] << "\n" << categories[2] << endl;
+		cin >> sInput;
+		if (sInput == categories[0]) {
+			category = 0;
+			grabFile(sInput, food);
 		}
-		else if (input == 2) {
-			grabFile(categories[input - 1], states);
+		else if (sInput == categories[1]) {
+			category = 1;
+			grabFile(sInput, categoryList[1]);
 		}
-		else if (input == 3) {
-			grabFile(categories[input - 1], animals);
+		else if (sInput == categories[2]) {
+			category = 2;
+			grabFile(sInput, categoryList[2]);
 		}
 		else {
 			cout << "Incorrect input" << endl;
@@ -128,13 +142,16 @@ public:
 		}
 		cout << char(188) << endl;
 	}
-	void drawWalls() {
-		for (int i = 0; i < 1; i++) {
-			for (int i = 0; i < levelOfDifficulty; i++) {
+	void drawWalls(vector<vector<string>> grid) {
+		for (int i = 0; i < levelOfDifficulty; i++) {
+			for (int j = 0; j < levelOfDifficulty; j++) {
 				cout << char(186);
-				cout << setfill(char(32)) << setw(letterWidth-1) << "test";
+				cout << setfill(char(32)) << setw(letterWidth - 1) << grid[i][j];
 			}
 			cout << char(186) << endl;
+			if (i < levelOfDifficulty - 1) {
+				drawDivider();
+			}
 		}
 	}
 	void drawDivider() {
@@ -152,23 +169,20 @@ public:
 	}
 	void startGame() {
 		cout << "Start game? Y/N"<< endl;
-		getline(cin, sInput);
-		cout << sInput;
+		cin >> sInput;
 		if (sInput == "Y") {
 			draw();
+		} else if (sInput == "N") {
+			system("pause");
 		} else {
+			cout << "Incorrect input" << endl;
 			startGame();
 		}
 	}
 	void draw() {
 		ghettoClear();
 		drawTop();
-		for (int i = 0; i < levelOfDifficulty; i++) {
-			drawWalls();
-			if (i < levelOfDifficulty - 1) {
-				drawDivider();
-			}
-		}
+		drawWalls(faceLayer);
 		drawBottom();
 	}
 };

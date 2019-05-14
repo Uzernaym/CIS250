@@ -21,7 +21,7 @@ private:
 	string sInput;
 	string categories[3] = { "Food", "States", "Animals" };
 	vector<string> food, states, animals;
-	vector<vector<string>> categoryList = {food, states, animals};
+	vector<vector<string>> categoryList = {};
 	vector<vector<string>> faceLayer, hiddenLayer;
 public:
 	int input;
@@ -106,11 +106,11 @@ public:
 		}
 		else if (sInput == categories[1]) {
 			category = 1;
-			grabFile(sInput, categoryList[1]);
+			grabFile(sInput, states);
 		}
 		else if (sInput == categories[2]) {
 			category = 2;
-			grabFile(sInput, categoryList[2]);
+			grabFile(sInput, animals);
 		}
 		else {
 			cout << "Incorrect input" << endl;

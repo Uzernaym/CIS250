@@ -1,5 +1,4 @@
 // FinalProjectMemoryMatchBrandon Liu.cpp
-
 #include "pch.h"
 #include <iostream>
 #include <fstream>
@@ -8,7 +7,6 @@
 #include <iomanip>
 #include <ctime>
 #include <stdlib.h>
-
 using namespace std;
 
 class MemoryMatchGame {
@@ -16,7 +14,7 @@ private:
 	int levelOfDifficulty;
 	int speedOfGame;
 	int category;
-	int letterWidth = 14;
+	int letterWidth = 15;
 	int randObj;
 	string sInput;
 	string categories[3] = { "Food", "States", "Animals" };
@@ -26,6 +24,9 @@ public:
 	int input;
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
+		categoryList.push_back(food);
+		categoryList.push_back(states);
+		categoryList.push_back(animals);
 	}
 	void pickSettings() {
 		chooseDifficulty();
@@ -42,7 +43,6 @@ public:
 		ifstream fin;
 		string aLine, aWord;
 		fin.open(name + ".txt");
-
 		if (!fin) {
 			cerr << "It's broke" << endl;
 			exit(1);
@@ -76,19 +76,12 @@ public:
 		}
 	}
 	void chooseCategory() {
-		cout << "Choose your category!\n" << categories[0] << "\n" << categories[1] << "\n" << categories[2] << endl;
-		cin >> sInput;
-		if (sInput == categories[0]) {
-			category = 0;
-			grabFile(sInput, food);
-		}
-		else if (sInput == categories[1]) {
-			category = 1;
-			grabFile(sInput, states);
-		}
-		else if (sInput == categories[2]) {
-			category = 2;
-			grabFile(sInput, animals);
+		cout << "Choose your category!\n1 - " << categories[0] << "\n2 - " << categories[1] << "\n3 - " << categories[2] << endl;
+		cin >> input;
+		input--;
+		if (input >= 0 && input < 3) {
+			category = input;
+			grabFile(categories[category], categoryList[category]);
 		}
 		else {
 			cout << "Incorrect input" << endl;
@@ -104,13 +97,13 @@ public:
 	}
 
 	vector<string> createHiddenVector() {
-		vector<string> test(levelOfDifficulty*levelOfDifficulty/2);
+		vector<string> temp(levelOfDifficulty*levelOfDifficulty);
 		srand(time(NULL));
-		for (int i = 0; i < test.size(); i++) {
-			randObj = rand() % test.size();
-			test[i] = food[randObj];
+		for (int i = 0; i < temp.size()/2; i++) {
+			randObj = rand() % 50;
+			temp[i] = categoryList[category][randObj];
 		}
-		return test;
+		return temp;
 	}
 
 	void ghettoClear() {
@@ -186,7 +179,6 @@ public:
 int main()
 {
 	MemoryMatchGame m1;
-
 	m1.pickSettings();
 	m1.startGame();
 

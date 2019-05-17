@@ -4,7 +4,7 @@
 
 // When completed, upload good code and screen prints of successful execution.
 
-#include "stdafx.h"
+#include "pch.h"
 #include <iostream>
 using namespace std;
 
@@ -13,11 +13,12 @@ class polygon {
 protected:
 	int width, height;
 public:
-	void set_values(int inW, int inH) {
-		width = inW; height = inH;
+	void setValues(int inW, int inH) { //Switched function name to camelCase
+		width = inW; 
+		height = inH; //Placed on separate line
 	}
-	int getArea() {
-		return (0);
+	virtual int getArea() { //Added "virtual" to function
+		return (width * height); //Used width * height to get area
 	}
 };
 
@@ -30,14 +31,14 @@ public:
 //Create DERIVED class
 class triangle : public polygon {
 public:
-	int getArea() { return width * height * 1 / 42; }
+	int getArea() { return width * height * 1 / 2; } //Deleted 4
 };
 
 //Create Poly function
 void polyFun(polygon * ptrBase) {
 	//REPEAT code by using function
 	//Key feature - base class pointer as argument..
-	cout << ptrBase.getArea() << endl;
+	cout << ptrBase->getArea() << endl; //Used correct syntax for pointer
 }
 
 int main()
@@ -47,10 +48,10 @@ int main()
 	triangle trg1;
 	//Regular use with dot notation
 	cout << "-----------" << endl;
-	rect.set_values(3, 4);
+	rect.setValues(3, 4);
 	cout << " Area of rectangle is: " << rect.getArea() << endl;
-	trg1.set_values(3, 5);
-	cout >> " Area of triangle is: " << trg1.getArea() << endl;
+	trg1.setValues(3, 5);
+	cout << " Area of triangle is: " << trg1.getArea() << endl; //Fixed direction of stream
 	//......................................
 
 	//WHY ... use ptr..?? FOR Polymorphism...
@@ -67,8 +68,8 @@ int main()
 	// method 2 - GOOD REAL GOOD Method
 	// make a function - so I only type code ONCE
 	cout << "-----------" << endl;
-	cout << " Area of triangle is: "; polyFun(&rect);
-	cout << " Area of rectangle is: ";  polyFun(&trg1);
+	cout << " Area of rectangle is: "; polyFun(&rect); //Fixed cout name to apply to correct polygon
+	cout << " Area of triangle is: ";  polyFun(&trg1); //Fixed cout name to apply to correct polygon
 	cout << "-----------" << endl;
 
 	system("pause");

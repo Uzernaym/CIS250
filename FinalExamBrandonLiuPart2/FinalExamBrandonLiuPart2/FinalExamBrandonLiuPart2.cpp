@@ -43,6 +43,7 @@ void polyFun(polygon * ptrBase) {
 
 int main()
 {
+	cout << "Name: Brandon Liu - Program Name: Final Exam Part 2 - Date: 5/16/2019\n";
 	//Regular static declarations
 	rectangle rect;
 	triangle trg1;
@@ -57,7 +58,6 @@ int main()
 	//WHY ... use ptr..?? FOR Polymorphism...
 	rectangle * ptrRect = NULL; //Be absolutely clear that it has NO address
 	triangle * ptrTrg1 = NULL;
-	polygon * ptrPoly = NULL;
 
 	ptrRect = &rect; //assign address to ptr variables
 	ptrTrg1 = &trg1;

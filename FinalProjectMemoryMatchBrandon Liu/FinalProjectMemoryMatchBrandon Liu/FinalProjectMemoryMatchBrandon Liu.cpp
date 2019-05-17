@@ -20,18 +20,23 @@ private:
 	int randObj;
 	string sInput;
 	string categories[3] = { "Food", "States", "Animals" };
-	vector<string> food, states, animals;
+	vector<string> food, states, animals, faceLayer, hiddenLayer;
 	vector<vector<string>> categoryList = {};
-	vector<vector<string>> faceLayer, hiddenLayer;
 public:
 	int input;
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
+	}
+	void pickSettings() {
 		chooseDifficulty();
 		chooseCategory();
+		//chooseSpeed();
 		faceLayer = createFaceVector();
 		hiddenLayer = createHiddenVector();
-		//chooseSpeed();
+
+		for (int i = 0; i < hiddenLayer.size(); i++) {
+			cout << hiddenLayer[i] << endl;
+		}
 	}
 	void grabFile(string name, vector<string> &data) {
 		ifstream fin;
@@ -58,33 +63,6 @@ public:
 			cout << "Incorrect input" << endl;
 			chooseDifficulty();
 		}
-	}
-
-	vector<vector<string>> createFaceVector() {
-		vector<vector<string>> faceLayer(levelOfDifficulty);
-		for (int i = 0; i < levelOfDifficulty; i++) {
-			faceLayer[i] = vector<string>(levelOfDifficulty);
-		}
-		for (int i = 0; i < faceLayer.size(); i++) {
-			for (int j = 0; j < faceLayer[i].size(); j++) {
-				faceLayer[i][j] = categories[category];
-			}
-		}
-		return faceLayer;
-	}
-	vector<vector<string>> createHiddenVector() {
-		vector<vector<string>> hiddenLayer(levelOfDifficulty);
-		for (int i = 0; i < levelOfDifficulty; i++) {
-			hiddenLayer[i] = vector<string>(levelOfDifficulty);
-		}
-		for (int i = 0; i < hiddenLayer.size(); i++) {
-			srand(time(NULL));
-			randObj = rand() % hiddenLayer.size();
-			for (int j = 0; j < hiddenLayer[i].size(); j++) {
-				hiddenLayer[i][j] = food[i];
-			}
-		}
-		return hiddenLayer;
 	}
 	void chooseSpeed() {
 		cout << "Choose your speed!\n1 - 6 seconds - Easy\n2 - 4 seconds - Moderate\n3 - 2 seconds - Hard" << endl;
@@ -117,6 +95,24 @@ public:
 			chooseCategory();
 		}
 	}
+	vector<string> createFaceVector() {
+		vector<string> test(levelOfDifficulty*levelOfDifficulty);
+		for (int i = 0; i < test.size(); i++) {
+			test[i] = categories[category];
+		}
+		return test;
+	}
+
+	vector<string> createHiddenVector() {
+		vector<string> test(levelOfDifficulty*levelOfDifficulty/2);
+		srand(time(NULL));
+		for (int i = 0; i < test.size(); i++) {
+			randObj = rand() % test.size();
+			test[i] = food[randObj];
+		}
+		return test;
+	}
+
 	void ghettoClear() {
 		for (int i = 0; i < 50; i++) {
 			cout << "" << endl;
@@ -142,11 +138,11 @@ public:
 		}
 		cout << char(188) << endl;
 	}
-	void drawWalls(vector<vector<string>> grid) {
+	void drawWalls(vector<string> grid) {
 		for (int i = 0; i < levelOfDifficulty; i++) {
 			for (int j = 0; j < levelOfDifficulty; j++) {
 				cout << char(186);
-				cout << setfill(char(32)) << setw(letterWidth - 1) << grid[i][j];
+				cout << setfill(char(32)) << setw(letterWidth - 1) << grid[(i*levelOfDifficulty) + j];
 			}
 			cout << char(186) << endl;
 			if (i < levelOfDifficulty - 1) {
@@ -182,7 +178,7 @@ public:
 	void draw() {
 		ghettoClear();
 		drawTop();
-		drawWalls(faceLayer);
+		drawWalls(hiddenLayer);
 		drawBottom();
 	}
 };
@@ -191,6 +187,7 @@ int main()
 {
 	MemoryMatchGame m1;
 
+	m1.pickSettings();
 	m1.startGame();
 
 	system("pause");

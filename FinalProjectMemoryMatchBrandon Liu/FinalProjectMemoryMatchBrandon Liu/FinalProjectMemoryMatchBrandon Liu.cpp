@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <iomanip>
 #include <ctime>
 #include <stdlib.h>
@@ -11,17 +12,13 @@ using namespace std;
 
 class MemoryMatchGame {
 private:
-	int levelOfDifficulty;
-	int speedOfGame;
-	int category;
-	int letterWidth = 15;
-	int randObj;
+	int levelOfDifficulty, speedOfGame, category, randObj, input, input1, input2;
+	int letterWidth = 14;
 	string sInput;
 	string categories[3] = { "Food", "States", "Animals" };
 	vector<string> food, states, animals, faceLayer, hiddenLayer;
 	vector<vector<string>> categoryList = {};
 public:
-	int input;
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
 		categoryList.push_back(food);
@@ -33,11 +30,10 @@ public:
 		chooseCategory();
 		//chooseSpeed();
 		faceLayer = createFaceVector();
+		
 		hiddenLayer = createHiddenVector();
-
-		for (int i = 0; i < hiddenLayer.size(); i++) {
-			cout << hiddenLayer[i] << endl;
-		}
+		
+		
 	}
 	void grabFile(string name, vector<string> &data) {
 		ifstream fin;
@@ -95,17 +91,28 @@ public:
 		}
 		return test;
 	}
-
 	vector<string> createHiddenVector() {
-		vector<string> temp(levelOfDifficulty*levelOfDifficulty);
-		srand(time(NULL));
-		for (int i = 0; i < temp.size()/2; i++) {
-			randObj = rand() % 50;
-			temp[i] = categoryList[category][randObj];
+		vector<string> hidden;
+		vector<string> temp;
+		temp = categoryList[category];
+		for (int i = 0; i < levelOfDifficulty*levelOfDifficulty / 2; i++) {
+			randObj = rand() % temp.size();
+			hidden.push_back(temp[randObj]);
+			temp.erase(temp.begin() + randObj);
 		}
-		return temp;
+		for (int i = 0; i < levelOfDifficulty*levelOfDifficulty/2; i++) {
+			hidden.push_back(hidden[i]);
+		}
+		for (int i = 0; i < hidden.size(); i++) {
+			cout << hidden[i] << endl;
+		}
+		for (int i = 0; i < 100; i++) {
+			randObj = rand() % hidden.size();
+			hidden.push_back(hidden[randObj]);
+			hidden.erase(hidden.begin() + randObj);
+		}
+		return hidden;
 	}
-
 	void ghettoClear() {
 		for (int i = 0; i < 50; i++) {
 			cout << "" << endl;
@@ -135,7 +142,7 @@ public:
 		for (int i = 0; i < levelOfDifficulty; i++) {
 			for (int j = 0; j < levelOfDifficulty; j++) {
 				cout << char(186);
-				cout << setfill(char(32)) << setw(letterWidth - 1) << grid[(i*levelOfDifficulty) + j];
+				cout << i*levelOfDifficulty + j + 1 << setfill(char(32)) << setw(letterWidth - 1 - (to_string(i*levelOfDifficulty + j + 1)).length()) << grid[(i*levelOfDifficulty) + j];
 			}
 			cout << char(186) << endl;
 			if (i < levelOfDifficulty - 1) {
@@ -160,7 +167,8 @@ public:
 		cout << "Start game? Y/N"<< endl;
 		cin >> sInput;
 		if (sInput == "Y") {
-			draw();
+			draw(faceLayer);
+			checkGame();
 		} else if (sInput == "N") {
 			system("pause");
 		} else {
@@ -168,16 +176,45 @@ public:
 			startGame();
 		}
 	}
-	void draw() {
+	void draw(vector<string> grid) {
 		ghettoClear();
 		drawTop();
-		drawWalls(hiddenLayer);
+		drawWalls(grid);
 		drawBottom();
+	}
+	void checkGame() {
+		checkOne();
+		checkTwo();
+	}
+	void checkOne() {
+		cout << "Choose your first square" << endl;
+		cin >> input1;
+		if (input1 > 0 && input1 <= levelOfDifficulty*levelOfDifficulty) {
+			faceLayer[input1-1] = hiddenLayer[input1-1];
+			draw(faceLayer);
+		}
+		else {
+			cout << "Incorrect input" << endl;
+			checkOne();
+		}
+	}
+	void checkTwo() {
+		cout << "Choose your second square" << endl;
+		cin >> input2;
+		if (input2 >= 0 && input2 < levelOfDifficulty*levelOfDifficulty && input2 != input1) {
+			faceLayer[input2-1] = hiddenLayer[input2-1];
+			draw(faceLayer);
+		}
+		else {
+			cout << "Incorrect input" << endl;
+			checkTwo();
+		}
 	}
 };
 
 int main()
 {
+	srand(time(NULL));
 	MemoryMatchGame m1;
 	m1.pickSettings();
 	m1.startGame();

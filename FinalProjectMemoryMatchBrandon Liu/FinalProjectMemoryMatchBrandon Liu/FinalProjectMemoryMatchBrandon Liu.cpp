@@ -20,6 +20,8 @@ private:
 	string categories[3] = { "Food", "States", "Animals" };
 	vector<string> food, states, animals, faceLayer, hiddenLayer;
 	vector<vector<string>> categoryList = {};
+	chrono::high_resolution_clock::time_point startTime = chrono::high_resolution_clock::now();
+	chrono::high_resolution_clock::time_point currentTime = chrono::high_resolution_clock::now();
 public:
 	MemoryMatchGame() {
 		cout << "Memory Match game started" << endl;
@@ -54,6 +56,11 @@ public:
 		if (input <= 3 && input >= 1) {
 			levelOfDifficulty = (input * 2) + 2;
 		}
+
+		else if(input == 0) {
+			levelOfDifficulty = 2;
+		}
+
 		else {
 			cin.clear();
 			cin.ignore(256, '\n');
@@ -166,13 +173,20 @@ public:
 		}
 		cout << char(185) << endl;
 	}
+	void start() {
+		pickSettings();
+		startGame();
+	}
 	void startGame() {
 		cout << "Start game? Y/N"<< endl;
 		cin >> sInput;
 		if (sInput == "Y") {
+			startTime = chrono::high_resolution_clock::now();
+			currentTime = chrono::high_resolution_clock::now();
 			draw(faceLayer);
 			checkGame();
 		} else if (sInput == "N") {
+			return;
 			system("pause");
 		} else {
 			cin.clear();
@@ -189,15 +203,16 @@ public:
 	}
 	void checkGame() {
 		if (scoreCounter >= levelOfDifficulty * levelOfDifficulty / 2) {
-			cout << "You win!" << endl << "Score - " << scoreCounter << endl << "Moves - " << turnCounter << "Would you like to play again? Y/N" << endl;
+			currentTime = chrono::high_resolution_clock::now();
+			cout << "You win!" << endl << "Score - " << scoreCounter << endl << "Moves - " << turnCounter << endl << "Time elapsed - " << chrono::duration_cast<chrono::seconds>(currentTime - startTime).count() << " seconds" << endl << "Would you like to play again? Y/N" << endl;
 			cin >> sInput;
 			if (sInput == "Y") {
 				scoreCounter = 0;
 				turnCounter = 0;
-				pickSettings();
-				startGame();
+				start();
 			}
 			else if (sInput == "N") {
+				return;
 				system("pause");
 			}
 			else {
@@ -256,8 +271,7 @@ int main()
 {
 	srand(time(NULL));
 	MemoryMatchGame m1;
-	m1.pickSettings();
-	m1.startGame();
+	m1.start();
 
 	system("pause");
 	return 0;

@@ -8,11 +8,13 @@
 #include <iomanip>
 #include <ctime>
 #include <stdlib.h>
+#include <thread>
+#include <chrono>
 using namespace std;
 
 class MemoryMatchGame {
 private:
-	int levelOfDifficulty, speedOfGame, category, randObj, input, input1, input2;
+	int levelOfDifficulty, speedOfGame, category, randObj, input, input1, input2, scoreCounter, turnCounter;
 	int letterWidth = 14;
 	string sInput;
 	string categories[3] = { "Food", "States", "Animals" };
@@ -28,12 +30,9 @@ public:
 	void pickSettings() {
 		chooseDifficulty();
 		chooseCategory();
-		//chooseSpeed();
+		chooseSpeed();
 		faceLayer = createFaceVector();
-		
 		hiddenLayer = createHiddenVector();
-		
-		
 	}
 	void grabFile(string name, vector<string> &data) {
 		ifstream fin;
@@ -56,6 +55,8 @@ public:
 			levelOfDifficulty = (input * 2) + 2;
 		}
 		else {
+			cin.clear();
+			cin.ignore(256, '\n');
 			cout << "Incorrect input" << endl;
 			chooseDifficulty();
 		}
@@ -64,9 +65,11 @@ public:
 		cout << "Choose your speed!\n1 - 6 seconds - Easy\n2 - 4 seconds - Moderate\n3 - 2 seconds - Hard" << endl;
 		cin >> input;
 		if (input <= 3 && input >= 1) {
-			speedOfGame = input;
+			speedOfGame = 6-((input-1)*2);
 		}
 		else {
+			cin.clear();
+			cin.ignore(256, '\n');
 			cout << "Incorrect input" << endl;
 			chooseSpeed();
 		}
@@ -80,6 +83,8 @@ public:
 			grabFile(categories[category], categoryList[category]);
 		}
 		else {
+			cin.clear();
+			cin.ignore(256, '\n');
 			cout << "Incorrect input" << endl;
 			chooseCategory();
 		}
@@ -103,9 +108,6 @@ public:
 		for (int i = 0; i < levelOfDifficulty*levelOfDifficulty/2; i++) {
 			hidden.push_back(hidden[i]);
 		}
-		for (int i = 0; i < hidden.size(); i++) {
-			cout << hidden[i] << endl;
-		}
 		for (int i = 0; i < 100; i++) {
 			randObj = rand() % hidden.size();
 			hidden.push_back(hidden[randObj]);
@@ -119,6 +121,7 @@ public:
 		}
 	}
 	void drawTop() {
+		cout << "Score - " << scoreCounter << setfill(' ') << setw(letterWidth) << "Moves - " << turnCounter << endl;
 		cout << char(201);
 		for (int i = 0; i < levelOfDifficulty; i++) {
 			cout << setfill(char(205)) << setw(letterWidth);
@@ -172,6 +175,8 @@ public:
 		} else if (sInput == "N") {
 			system("pause");
 		} else {
+			cin.clear();
+			cin.ignore(256, '\n');
 			cout << "Incorrect input" << endl;
 			startGame();
 		}
@@ -183,17 +188,50 @@ public:
 		drawBottom();
 	}
 	void checkGame() {
+		if (scoreCounter >= levelOfDifficulty * levelOfDifficulty / 2) {
+			cout << "You win!" << endl << "Score - " << scoreCounter << endl << "Moves - " << turnCounter << "Would you like to play again? Y/N" << endl;
+			cin >> sInput;
+			if (sInput == "Y") {
+				scoreCounter = 0;
+				turnCounter = 0;
+				pickSettings();
+				startGame();
+			}
+			else if (sInput == "N") {
+				system("pause");
+			}
+			else {
+				cin.clear();
+				cin.ignore(256, '\n');
+				cout << "Incorrect input" << endl;
+				startGame();
+			}
+		}
 		checkOne();
 		checkTwo();
+		turnCounter++;
+		this_thread::sleep_for(chrono::seconds(speedOfGame));
+		if (faceLayer[input1 - 1] != faceLayer[input2 - 1]) {
+			cout << input1 << endl << input2 << endl;
+			faceLayer[input1 - 1] = categories[category];
+			faceLayer[input2 - 1] = categories[category];
+		}
+		else {
+			scoreCounter++;
+		}
+		draw(faceLayer);
+		checkGame();
 	}
 	void checkOne() {
 		cout << "Choose your first square" << endl;
 		cin >> input1;
-		if (input1 > 0 && input1 <= levelOfDifficulty*levelOfDifficulty) {
+		if (input1 > 0 && input1 <= levelOfDifficulty*levelOfDifficulty && faceLayer[input1-1] == categories[category]) {
 			faceLayer[input1-1] = hiddenLayer[input1-1];
 			draw(faceLayer);
 		}
 		else {
+			cin.clear();
+			cin.ignore(256, '\n');
 			cout << "Incorrect input" << endl;
 			checkOne();
 		}
@@ -201,11 +239,13 @@ public:
 	void checkTwo() {
 		cout << "Choose your second square" << endl;
 		cin >> input2;
-		if (input2 >= 0 && input2 < levelOfDifficulty*levelOfDifficulty && input2 != input1) {
-			faceLayer[input2-1] = hiddenLayer[input2-1];
+		if (input2 > 0 && input2 <= levelOfDifficulty*levelOfDifficulty && input2 != input1 && faceLayer[input2-1] == categories[category]) {
+			faceLayer[input2 - 1] = hiddenLayer[input2 - 1];
 			draw(faceLayer);
 		}
 		else {
+			cin.clear();
+			cin.ignore(256, '\n');
 			cout << "Incorrect input" << endl;
 			checkTwo();
 		}

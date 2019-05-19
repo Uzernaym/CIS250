@@ -270,6 +270,7 @@ public:
 int main()
 {
 	srand(time(NULL));
+	cout << "Name: Brandon Liu - Program Name: Memory Match Game - Date: 5/19/2019\n";
 	MemoryMatchGame m1;
 	m1.start();
 
